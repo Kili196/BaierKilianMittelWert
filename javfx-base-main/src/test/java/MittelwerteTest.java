@@ -159,13 +159,11 @@ public class MittelwerteTest extends FxTest {
         addValue(robot, -1);
         robot.interact(() -> listView.getItems().addAll(1.0, 2.0, 3.0));
         addValue(robot, 0.0);
-
         robot.interact(() -> listView.getSelectionModel().select(-1.0));
         robot.interact(btnRemoveSelected::fire);
         assumeThatThrownBy(() -> parseDouble(txtGeometric.getText()));
         robot.interact(() -> listView.getSelectionModel().select(0.0));
         robot.interact(btnRemoveSelected::fire);
-
         assertThat(txtGeometric).hasText("2");
     }
 
@@ -216,7 +214,8 @@ public class MittelwerteTest extends FxTest {
     }
 
     @TestFactory
-    Stream<DynamicTest> checkBoxUnchecked_noResultText(FxRobot robot) {
+    Stream<DynamicTest>
+    checkBoxUnchecked_noResultText(FxRobot robot) {
         return Map.of(this.cbArithmetic, txtArithmetic, cbGeometric, txtGeometric, cbHarmonic, txtHarmonic)
                 .entrySet().stream()
                 .map(e -> DynamicTest.dynamicTest(e.getKey().getText(), () -> {
@@ -272,7 +271,6 @@ public class MittelwerteTest extends FxTest {
         robot.interact(() -> listView.getItems().addAll(1.666, 3.0, 4.7, 0.0));
 
         robot.interact(() -> slider.setValue(5));
-
         assertThat(txtHarmonic).hasText("0.00000");
     }
 
@@ -308,9 +306,7 @@ public class MittelwerteTest extends FxTest {
         return IntStream.range(0, 6).mapToObj(i -> DynamicTest.dynamicTest(String.format("%d Fractiondigit", i), () -> {
             robot.interact(listView.getItems()::clear);
             robot.interact(() -> listView.getItems().addAll(-1.87, 3.34, 4.82));
-
             robot.interact(() -> slider.setValue(i));
-
             assertThat(txtArithmetic).hasText(format(expected[i], i));
         }));
     }

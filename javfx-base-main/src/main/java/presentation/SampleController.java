@@ -51,6 +51,13 @@ public class SampleController implements Initializable {
         btnAddValue.setOnAction(actionEvent -> {
             checkDouble(tfNewValue);
         });
+
+
+        cbHarmonic.setSelected(true);
+        cbArithmetic.setSelected(true);
+        cbGeometric.setSelected(true);
+
+
         tfNewValue.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode().equals(KeyCode.ENTER)) {
                 checkDouble(tfNewValue);
@@ -58,7 +65,6 @@ public class SampleController implements Initializable {
         });
         btnRemoveSelected.setOnAction(actionEvent -> listView.getItems().remove(listView.getSelectionModel().getSelectedItem()));
         btnClear.setOnAction(actionEvent -> listView.getItems().clear());
-
         listView.getItems().addListener(this::calcArithmetic);
         cbArithmetic.selectedProperty().addListener(this::calcArithmetic);
         slider.valueProperty().addListener(this::calcArithmetic);
@@ -70,7 +76,6 @@ public class SampleController implements Initializable {
         slider.valueProperty().addListener(this::calcHarmonisch);
 
     }
-
     public void checkDouble(TextField textView){
         if (!textView.getText().isEmpty()) {
             try {
@@ -87,7 +92,6 @@ public class SampleController implements Initializable {
         if(listView.getItems().size() == 0){
             txtArithmetic.setText("Keine Zahlen in der Liste");
         }
-
         double countOfListView = 0;
         double sizeOfListView = listView.getItems().size();
         for (double i : listView.getItems()) {
@@ -95,7 +99,7 @@ public class SampleController implements Initializable {
         }
         double Aritmetic = (countOfListView / sizeOfListView);
         if (cbArithmetic.isSelected()) {
-            txtArithmetic.setText(format(Aritmetic, (int) slider.getValue()));
+            txtArithmetic.setText(format(Aritmetic));
         } else {
             txtArithmetic.setText("");
         }
@@ -123,7 +127,7 @@ public class SampleController implements Initializable {
             if (minus) {
                 txtGeometric.setText("Minus Zahl oder Null!!");
             } else {
-                txtGeometric.setText(format((Math.pow(multiplyListView, 1.0 / listView.getItems().size())), (int) slider.getValue()));
+                txtGeometric.setText(format((Math.pow(multiplyListView, 1.0 / listView.getItems().size()))));
             }
         } else {
             txtGeometric.setText("");
@@ -145,17 +149,15 @@ public class SampleController implements Initializable {
         }
         if(cbHarmonic.isSelected()){
             txtHarmonic.setVisible(true);
-            txtHarmonic.setText(format(listView.getItems().size() / summUnten, (int) slider.getValue()));
+            txtHarmonic.setText(format(listView.getItems().size() / summUnten));
 
         }
         else{
             txtHarmonic.setVisible(false);
         }
     }
-    public String format(double zahl, int nachkomma){
-        NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
-        numberFormat.setMaximumFractionDigits(nachkomma);
-        numberFormat.setMinimumFractionDigits(nachkomma);
-        return numberFormat.format(zahl);
+    public String format(double zahl){
+        int places = (int) slider.getValue();
+        return String.format("%." + places + "f", zahl);
     }
 }
